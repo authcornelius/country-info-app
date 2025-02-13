@@ -18,6 +18,9 @@ import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useTheme } from "../component/ThemeContext";
 import { useFonts } from "expo-font";
+import LightLogo from '../assets/logo.png';
+import DarkLogo from '../assets/ex_logo.png';
+import { Image } from "react-native";
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
@@ -102,14 +105,11 @@ export default function Home() {
       ]}
     >
       <View style={styles.grid}>
-        <Text
-          style={[
-            styles.h1,
-            theme === "dark" ? styles.darkText : styles.lightText,
-          ]}
-        >
-          Explore
-        </Text>
+        <Image 
+          source={theme === "dark" ? LightLogo : DarkLogo}
+          style={styles.logo}
+          alt="Logo"
+        />
 
         <Pressable onPress={toggleTheme}>
           {theme === "dark" ? (

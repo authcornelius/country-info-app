@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: "center",
   },
+
+  logo: {
+    width: 90,
+    height: 23,
+  },
   
   h1: {
     fontSize: 20,
