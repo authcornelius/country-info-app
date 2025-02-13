@@ -228,9 +228,14 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
 
-  dropdownText: {
+  dropdownTextDark: {
     fontSize: 16,
     color: '#D0D5DD',
+  },
+
+  dropdownTextLight: {
+    fontSize: 16,
+    color: '#667085',
   },
 
   checkboxCircle: {
@@ -264,11 +269,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "transparent", // Correct way to make background transparent
     borderWidth: 1,
-    borderColor: "#F2F4F7",
     fontSize: 16,
     fontWeight: 400,
-    color: "#F2F4F7",
   }, 
+  
+  darkBtn: {
+    color: "#F2F4F7",
+    borderColor: "#F2F4F7"
+  },
+
+  lightBtn: {
+    color: "#1C1917",
+    borderColor: "#1C1917"
+  },
 
 resultBtn: {
     paddingVertical: 12,

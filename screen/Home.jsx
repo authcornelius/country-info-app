@@ -236,8 +236,8 @@ export default function Home() {
               >
                 <Text 
                   style={[
-                    styles.dropdownText,
                     {fontFamily: 'Axiforma-Regular'},
+                    theme === "dark" ? styles.dropdownTextDark : styles.dropdownTextLight,
                   ]}
                 >
                   {language.name}
@@ -323,8 +323,8 @@ export default function Home() {
                   >
                     <Text 
                       style={[
-                        styles.dropdownText,
-                        {fontFamily: 'Axiforma-Regular'}
+                        {fontFamily: 'Axiforma-Regular'},
+                        theme === "dark" ? styles.darkText : styles.lightText,
                       ]}
                     >
                       {item.name}
@@ -377,8 +377,8 @@ export default function Home() {
                   >
                     <Text 
                       style={[
-                        styles.dropdownText,
-                        {fontFamily: 'Axiforma-Regular'}
+                        {fontFamily: 'Axiforma-Regular'},,
+                        theme === "dark" ? styles.darkText : styles.lightText,
                       ]}
                     >
                       {item.name}
@@ -414,6 +414,9 @@ export default function Home() {
                   style={[
                     styles.resetBtn,
                     {fontFamily: 'Axiforma-Regular'},
+                    theme === "dark" 
+                    ? styles.darkBtn 
+                    : styles.lightBtn,
                   ]}
                 >
                   Reset
