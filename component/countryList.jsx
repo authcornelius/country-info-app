@@ -12,7 +12,7 @@ const groupCountriesByLetter = (countries) => {
     const groupedData = {};
 
     countries.forEach((country) => {
-        const firstLetter = country.name[0].toUpperCase();
+        const firstLetter = country?.name?.common.charAt(0)?.toUpperCase();
         if (!groupedData[firstLetter]) {
             groupedData[firstLetter] = [];
         }
@@ -28,21 +28,22 @@ const groupCountriesByLetter = (countries) => {
 const CountryList = ({ theme, name }) => {
     const navigation = useNavigation();
     
+    
     const { data, isLoading } = useGetCountriesQuery(name);
-
+    
     if (isLoading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
     // Handle both single object and array responses
-    const countriesArray = Array.isArray(data?.data) ? data.data : [data?.data];
+    const countriesArray = Array.isArray(data) ? data : [data];
     const sections = groupCountriesByLetter(countriesArray);
 
     return (
         <SectionList
             sections={sections}
             style={{ marginTop: 20 }}
-            keyExtractor={(item) => item.iso3}
+            keyExtractor={(item, index) => item.iso3 ? item.iso3 : `key-${index}`}
             renderSectionHeader={({ section: { title } }) => (
                 <Text style={styles.sectionHeader}>{title}</Text>
             )}
@@ -51,24 +52,24 @@ const CountryList = ({ theme, name }) => {
                     onPress={() => navigation.navigate('Detail', { country: item })}
                 >
                     <View style={styles.flagWrapper}>
-                        <Image source={{ uri: item.href.flag }} style={styles.flag} />
+                        <Image source={{ uri: item.flags.png }} style={styles.flag} />
                         <View style={{ marginLeft: 10 }}>
                             <Text 
                                 style={[
-                                    { fontWeight: 'bold' },
+                                    { fontWeight: 'bold', fontFamily: 'Axiforma-Regular', fontSize: 14 },
                                     theme === 'dark' ? { color: '#F2F4F7' } : { color: '#1C1917' },
                                 ]}
                             >
-                                {item.name}
+                                {item.name.common}
                             </Text>
 
                             <Text 
                                 style={[
-                                    {color: '#667085'},
+                                    {color: '#667085', fontFamily: 'Axiforma-Regular',},
                                     theme === 'dark' ? { color: '#98A2B3' } : { color: '#667085' },
                                 ]}
                             >
-                                {item.capital}
+                                {item.capital?.[0]}
                             </Text>
                         </View>
                     </View>

@@ -23,7 +23,7 @@ export const countriesApiSlice = createApi({
   endpoints: (builder) => ({
     getCountries: builder.query({
       query: (name = '') => ({
-        url: name ? `${COUNTRIES}/${name}` : COUNTRIES,
+        url: name ? `/name/${name}` : COUNTRIES,
       }),
       providesTags: ["all_countries"],
     }),
@@ -39,5 +39,4 @@ export const countriesApiSlice = createApi({
 export const { 
   useGetCountriesQuery ,
   useGetStatesQuery,
-  useGetCountryQuery,
 } = countriesApiSlice;

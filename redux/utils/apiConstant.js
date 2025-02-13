@@ -1,2 +1,3 @@
-export const BASE_URL = "https://restfulcountries.com/api/v1";
-export const COUNTRIES = "/countries";
+export const BASE_URL = "https://restcountries.com/v3.1";
+
+export const COUNTRIES = "/all";

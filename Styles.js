@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 30,
+    paddingVertical: 50,
     paddingHorizontal: 20,
   },
 
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   
   h1: {
     fontSize: 20,
+    fontFamily: 'Axiforma-Regular',
   },
 
   search: {
@@ -146,6 +147,138 @@ const styles = StyleSheet.create({
   lightSearch: {
     backgroundColor: '#F2F4F7',
   },
+
+
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContainer: {
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    backgroundColor: "#98A2B3",
+    padding: 4,
+    borderRadius: 5,
+  },
+
+  closeView: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 25,
+  },
+
+  languageItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+
+  languageText: {
+    fontSize: 16,
+  },
+  radioContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+
+  radioCircle: {
+    height: 18,
+    width: 18,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#667085",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  radioBgDark: {
+    backgroundColor: 'white',
+    height: 12,
+    width: 12,
+    borderRadius: 10,
+  },
+
+  radioBgLight: {
+    backgroundColor: '#001637',
+    height: 12,
+    width: 12,
+    borderRadius: 10,
+  },
+
+  dropdownHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingBottom: 15,
+  },
+
+  dropdownText: {
+    fontSize: 16,
+    color: '#D0D5DD',
+  },
+
+  checkboxCircle: {
+    height: 18,
+    width: 18,
+    borderRadius: 2,
+    borderWidth: 2,
+    borderColor: "#667085",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  checkBgDark: {
+    backgroundColor: '#1C1917',
+  },
+
+  checkBgLight: {
+    backgroundColor: '#FFFFFF',
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+    justifyContent: "space-between",
+  },
+
+  resetBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 5,
+    backgroundColor: "transparent", // Correct way to make background transparent
+    borderWidth: 1,
+    borderColor: "#F2F4F7",
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#F2F4F7",
+  }, 
+
+resultBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 60,
+    borderRadius: 5,
+    backgroundColor: "#FF6C00CC",
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#F2F4F7",
+  }
 });
 
 export default styles;
