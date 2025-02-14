@@ -198,11 +198,21 @@ export default function Home() {
 
       {selectedFilter.length > 0 && (
         <View style={{ flexDirection: "row", alignItems: "center", paddingTop: 20 }}>
-          <Text style={{fontWeight: 700, fontSize: 15, fontFamily: 'Axiforma-Regular'}}>Active filter: </Text>
+          <Text 
+            style={[
+              {fontWeight: 700, fontSize: 15, fontFamily: 'Axiforma-Regular'},
+              theme === "dark" ? {color: 'white'} : {color: 'black'},
+            ]}
+          >
+            Active filter: 
+          </Text>
           {selectedFilter.map((filter, index) => (
-            <Text key={index} style={{ fontWeight: 400, fontFamily: 'Axiforma-Regular', fontSize: 15}}>
+            <Text key={index} 
+              style={[
+                { fontWeight: 400, fontFamily: 'Axiforma-Regular', fontSize: 14, marginLeft: 5, marginTop: 3 },
+                theme === "dark" ? {color: 'white'} : {color: 'black'},
+              ]}>
               {filter}
-              {index < selectedFilter.length - 1 && ", "}
             </Text>
           ))}
         </View>
