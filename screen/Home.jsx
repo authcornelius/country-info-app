@@ -355,7 +355,7 @@ export default function Home() {
                       <Text 
                         style={[
                           {fontFamily: 'Axiforma-Regular'},
-                          theme === "dark" ? styles.darkText : styles.lightText,
+                          theme === 'dark' ? { color: '#D0D5DD' } : { color: '#667085' },
                         ]}
                       >
                         {item.name}
@@ -410,8 +410,8 @@ export default function Home() {
                     >
                       <Text 
                         style={[
-                          {fontFamily: 'Axiforma-Regular'},,
-                          theme === "dark" ? styles.darkText : styles.lightText,
+                          {fontFamily: 'Axiforma-Regular',},
+                          theme === 'dark' ? { color: '#D0D5DD' } : { color: '#667085' },
                         ]}
                       >
                         {item.name}
