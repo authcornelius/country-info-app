@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, Image, ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import styles from '../Styles'
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -146,7 +146,9 @@ const Detail = ({ route }) => {
 
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20, }}>
 
+        <View style={{ position: 'relative' }}>
             <Animated.FlatList
+                ref={flatListRef}
                 data={imageData}
                 renderItem={renderCarouselItem}
                 horizontal
@@ -161,6 +163,37 @@ const Detail = ({ route }) => {
                     setCurrentIndex(newIndex);
                 }}
             />
+            
+            {/* Left Control */}
+            <TouchableOpacity 
+                style={{
+                    position: 'absolute',
+                    left: 10,
+                    top: '40%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    borderRadius: 20,
+                    padding: 10
+                }}
+                onPress={goToPrevSlide}
+            >
+                <AntDesign name="left" size={24} color="white" />
+            </TouchableOpacity>
+
+            {/* Right Control */}
+            <TouchableOpacity 
+                style={{
+                    position: 'absolute',
+                    right: 10,
+                    top: '40%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    borderRadius: 20,
+                    padding: 10
+                }}
+                onPress={goToNextSlide}
+            >
+                <AntDesign name="right" size={24} color="white" />
+            </TouchableOpacity>
+        </View>
 
             <View style={styles.description}>
                 <View style={styles.eachDescription}>
