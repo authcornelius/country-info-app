@@ -21,6 +21,7 @@ import { useFonts } from "expo-font";
 import LightLogo from '../assets/logo.png';
 import DarkLogo from '../assets/ex_logo.png';
 import { Image } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
@@ -28,10 +29,12 @@ export default function Home() {
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("En");
-  const [selectedContinents, setSelectedContinents] = useState([]);
+  const [selectedContinent, setSelectedContinent] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState([]);
+  
   const [ showContinent, setShowContinent] = useState(false);
 
-  const [selectedTimeZones, setSelectedTimeZones] = useState([]);
+  const [selectedTimeZone, setSelectedTimeZone] = useState('');
   const [ showTimeZone, setShowTimeZone] = useState(false);
 
   const [fontsLoaded] = useFonts({
@@ -51,16 +54,14 @@ export default function Home() {
     setLanguageModalVisible(false);
   };
 
-  const toggleContinentSelection = (code) => {
-    setSelectedContinents((prev) =>
-      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
-    );
+  const toggleContinentSelection = (name) => {
+    setSelectedContinent(selectedContinent === name ? '' : name);
+    setSelectedTimeZone('');
   };
 
-  const toggleTimeZoneSelection = (code) => {
-    setSelectedTimeZones((prev) =>
-      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
-    );
+  const toggleTimeZoneSelection = (name) => {
+    // setSelectedTimeZone(selectedTimeZone === name ? '' : name);
+    setSelectedContinent('');
   };
 
   const continent = [
@@ -74,12 +75,12 @@ export default function Home() {
   ];
 
   const timeZone = [
-    { name: "GMT+1:00", code: "GMT+1:00" },
-    { name: "GMT +2:00", code: "GMT +2:00" },
-    { name: "GMT +3:00", code: "GMT +3:00" },
-    { name: "GMT +4:00", code: "GMT +4:00" },
-    { name: "GMT +5:00", code: "GMT +5:00" },
-    { name: "GMT +6:00", code: "GMT +6:00" },
+    { name: "GMT+1:00", code: "UTC+1:00" },
+    { name: "GMT+2:00", code: "UTC+2:00" },
+    { name: "GMT+3:00", code: "UTC+3:00" },
+    { name: "GMT+4:00", code: "UTC+4:00" },
+    { name: "GMT+5:00", code: "UTC+5:00" },
+    { name: "GMT+6:00", code: "UTC+6:00" }
   ]
 
   const languageList = [
@@ -96,6 +97,13 @@ export default function Home() {
     { name: "Korean", code: "Ko" },
     { name: "Arabic", code: "Ar" },
   ];
+
+  const handleApplyFilters = () => {
+    setFilterVisible(false);
+    const activeFilter = selectedContinent || selectedTimeZone;
+    setSelectedFilter(activeFilter ? [activeFilter] : []);
+  };
+  
 
   return (
     <View
@@ -188,7 +196,19 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      <CountryList theme={theme} name={searchValue} />
+      {selectedFilter.length > 0 && (
+        <View style={{ flexDirection: "row", alignItems: "center", paddingTop: 20 }}>
+          <Text style={{fontWeight: 700, fontSize: 15, fontFamily: 'Axiforma-Regular'}}>Active filter: </Text>
+          {selectedFilter.map((filter, index) => (
+            <Text key={index} style={{ fontWeight: 400, fontFamily: 'Axiforma-Regular', fontSize: 15}}>
+              {filter}
+              {index < selectedFilter.length - 1 && ", "}
+            </Text>
+          ))}
+        </View>
+      )}
+
+      <CountryList theme={theme} name={searchValue} region={selectedFilter} />
 
       {/*language modal */}
       <Modal
@@ -314,36 +334,38 @@ export default function Home() {
             </TouchableOpacity>
 
             {showContinent === true && (
-              <View>
-                {continent.map((item) => (
-                  <TouchableOpacity
-                    key={item.code}
-                    style={styles.radioContainer}
-                    onPress={() => toggleContinentSelection(item.code)}
-                  >
-                    <Text 
-                      style={[
-                        {fontFamily: 'Axiforma-Regular'},
-                        theme === "dark" ? styles.darkText : styles.lightText,
-                      ]}
+              <ScrollView style={{ maxHeight: 150 }}>
+                <View>
+                  {continent.map((item) => (
+                    <TouchableOpacity
+                      key={item.code}
+                      style={styles.radioContainer}
+                      onPress={() => toggleContinentSelection(item.name)}
                     >
-                      {item.name}
-                    </Text>
+                      <Text 
+                        style={[
+                          {fontFamily: 'Axiforma-Regular'},
+                          theme === "dark" ? styles.darkText : styles.lightText,
+                        ]}
+                      >
+                        {item.name}
+                      </Text>
 
-                    <View style={styles.checkboxCircle}>
-                      {selectedContinents.includes(item.code) && (
-                        <View 
-                          style={[
-                            theme === "dark" ? styles.checkBgLight : styles.checkBgDark,
-                          ]}
-                          >
-                          <Feather name="check" size={15} color={theme === "dark" ? "#1C1917" : "#FFFFFF"} />
-                        </View> 
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
+                      <View style={styles.checkboxCircle}>
+                        {selectedContinent === item.name && (
+                          <View 
+                            style={[
+                              theme === "dark" ? styles.checkBgLight : styles.checkBgDark,
+                            ]}
+                            >
+                            <Feather name="check" size={15} color={theme === "dark" ? "#1C1917" : "#FFFFFF"} />
+                          </View> 
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
             )}
 
             <TouchableOpacity 
@@ -368,47 +390,50 @@ export default function Home() {
             </TouchableOpacity>
 
             {showTimeZone === true && (
-              <View>
-                {timeZone.map((item) => (
-                  <TouchableOpacity
-                    key={item.code}
-                    style={styles.radioContainer}
-                    onPress={() => toggleTimeZoneSelection(item.code)}
-                  >
-                    <Text 
-                      style={[
-                        {fontFamily: 'Axiforma-Regular'},,
-                        theme === "dark" ? styles.darkText : styles.lightText,
-                      ]}
+              <ScrollView style={{ maxHeight: 150 }}>
+                <View>
+                  {timeZone.map((item) => (
+                    <TouchableOpacity
+                      key={item.code}
+                      style={styles.radioContainer}
+                      onPress={() => toggleTimeZoneSelection(item.code)}
                     >
-                      {item.name}
-                    </Text>
+                      <Text 
+                        style={[
+                          {fontFamily: 'Axiforma-Regular'},,
+                          theme === "dark" ? styles.darkText : styles.lightText,
+                        ]}
+                      >
+                        {item.name}
+                      </Text>
 
-                    <View style={styles.checkboxCircle}>
-                      {selectedTimeZones.includes(item.code) && (
-                        <View 
-                          style={[
-                            theme === "dark" ? styles.checkBgLight : styles.checkBgDark,
-                          ]}
-                          >
-                          <Feather name="check" size={15} color={theme === "dark" ? "#1C1917" : "#FFFFFF"} />
-                        </View> 
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </View>
+                      <View style={styles.checkboxCircle}>
+                        {selectedTimeZone === item.code && (
+                          <View 
+                            style={[
+                              theme === "dark" ? styles.checkBgLight : styles.checkBgDark,
+                            ]}
+                            >
+                            <Feather name="check" size={15} color={theme === "dark" ? "#1C1917" : "#FFFFFF"} />
+                          </View> 
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
             )}
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 onPress={() => {
-                  setSelectedContinents([]);
-                  setSelectedTimeZones([]);
+                  setSelectedContinent('');
+                  setSelectedTimeZone('');
                   setShowContinent(false);
                   setShowTimeZone(false);
                   setFilterVisible(false);
-                }}
+                  setSelectedFilter([]);
+                }}                
               >
                 <Text 
                   style={[
@@ -429,6 +454,7 @@ export default function Home() {
                     styles.resultBtn,
                     {fontFamily: 'Axiforma-Regular'},
                   ]}
+                  onPress={() => handleApplyFilters()}
                 >
                   Show results
                 </Text>

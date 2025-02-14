@@ -1,17 +1,34 @@
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, ScrollView, Text, View } from 'react-native'
 import React from 'react'
 import styles from '../Styles'
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useGetStatesQuery } from '../redux/slices/countriesApiSlice';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../component/ThemeContext';
+import Animated, { 
+    useAnimatedScrollHandler,
+    useSharedValue,
+    useAnimatedStyle
+} from 'react-native-reanimated';
+import { useFonts } from 'expo-font';
 
 const Detail = ({ route }) => {
+    const { width } = Dimensions.get('window');  // Get the screen width
+
     const { theme } = useTheme();
     
     const { country } = route.params;
     
     const navigation = useNavigation();
+
+    
+    const [fontsLoaded] = useFonts({
+        'Axiforma-Regular': require('../assets/fonts/axiforma-regular.ttf'),
+    });
+
+    if (!fontsLoaded) {
+        return null; // Can replace with a loading spinner or screen
+    }
     
     const { data, isLoading } = useGetStatesQuery(country?.name?.common);
     if (isLoading) {
@@ -22,8 +39,41 @@ const Detail = ({ route }) => {
         navigation.goBack();
     };
 
+    const renderCarouselItem = ({ item, index }) => {
+        return (
+          <View style={{
+            width: width - 40,
+            height: 200,
+            marginHorizontal: 10,
+            borderRadius: 10,
+            overflow: 'hidden'
+          }}>
+            <Image 
+              source={{ uri: item.image }}
+              style={{
+                width: '100%',
+                height: '100%',
+                resizeMode: 'cover'
+              }}
+            />
+            <View style={{
+              position: 'absolute',
+              bottom: 20,
+              left: 20,
+              right: 20,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              padding: 10,
+              borderRadius: 8
+            }}>
+              <Text style={{ color: 'white', fontSize: 16 }}>{item.title}</Text>
+            </View>
+          </View>
+        );
+    };
+
     const name = country?.name?.common || '';
     const flag = country?.flags?.png || '';
+    const coatOfArms = country?.coatOfArms?.png || '';
     const capital = country?.capital || [];
     const region = country?.region || '';
     const population = country?.population || 'not available';
@@ -31,6 +81,19 @@ const Detail = ({ route }) => {
     const currencies = country?.currencies 
   ? Object.values(country.currencies)[0]?.name || 'not available' 
   : 'not available';
+
+  const imageData = [
+        {
+            id: '1',
+            image: flag,
+            title: `Flag of ${name}`
+        },
+        {
+            id: '2',
+            image: coatOfArms,
+            title: `Coat of Arms of ${name}`
+        }
+    ];
 
   return (
     <View 
@@ -59,10 +122,19 @@ const Detail = ({ route }) => {
             </View>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
-            <View style={styles.detailFlag}>
-                <Image source={{ uri: flag }} style={styles.image} />
-            </View>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20, }}>
+
+            <Animated.FlatList
+                data={imageData}
+                renderItem={renderCarouselItem}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                snapToInterval={width - 20}
+                decelerationRate="fast"
+                bounces={false}
+                style={{ marginVertical: 10 }}
+            />
 
             <View style={styles.description}>
                 <View style={styles.eachDescription}>
@@ -145,7 +217,6 @@ const Detail = ({ route }) => {
 
             </View>
 
-            <View style={styles.description}>
                 <View style={styles.eachDescription}>
                     <Text 
                         style={[ 
@@ -163,9 +234,6 @@ const Detail = ({ route }) => {
                     >
                         {region}
                     </Text>
-                </View>
-
-                <View style={styles.eachDescription}>
                 </View>
                 
                 <View style={styles.eachDescription}>
@@ -185,48 +253,8 @@ const Detail = ({ route }) => {
                     >
                         {currencies}
                     </Text>
-                </View>
 
-                <View style={styles.eachDescription}>
-                    <Text 
-                        style={[ 
-                            styles.descriptionHeading,
-                            theme === "dark" ? { color: '#F2F4F7'} : { color: '#1C1917'}
-                        ]}
-                    >
-                        President: 
-                    </Text>
-                    <Text 
-                        style={[
-                            styles.descriptionParagraph,
-                            theme === "dark" ? { color: '#F2F4F7'} : { color: '#000000'}
-                        ]}
-                    >
-                        api not available to fetch president
-                    </Text>
                 </View>
-
-                <View style={styles.eachDescription}>
-                    <Text 
-                        style={[ 
-                            styles.descriptionHeading,
-                            theme === "dark" ? { color: '#F2F4F7'} : { color: '#1C1917'}
-                        ]}
-                    >
-                        All states: 
-                    </Text>
-                    <Text 
-                        style={[
-                            styles.descriptionParagraph,
-                            theme === "dark" ? { color: '#F2F4F7'} : { color: '#000000'}
-                        ]}
-                    >
-                        {/* {data?.data?.map((item) => item.name).join(', ')} */}
-                        api not available to fetch all states
-                    </Text>
-                </View>
-
-            </View>
         </ScrollView>
     </View>
   )

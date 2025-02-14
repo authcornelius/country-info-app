@@ -6,6 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './screen/Home';
 import Detail from './screen/Detail';
 import { ThemeProvider } from './component/ThemeContext';
+import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const Stack = createStackNavigator();
 

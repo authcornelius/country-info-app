@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between', // Ensures proper spacing
-    paddingVertical: 10,
+    paddingTop: 10,
   },
   headerText: {
     flex: 1,
@@ -107,23 +107,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  description: {
-    marginTop: 20,
-  },
-
   eachDescription: {
     flexDirection: 'row',
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
 
   descriptionHeading: {
     fontSize: 16,
     fontWeight: 500,
+    fontFamily: 'Axiforma-Regular',
   },
 
   descriptionParagraph: {
     fontSize: 16,
-    width: '80%',
     fontWeight: 300,
+    fontFamily: 'Axiforma-Regular',
     marginLeft: 10,
   },
 
@@ -288,7 +287,7 @@ const styles = StyleSheet.create({
     borderColor: "#1C1917"
   },
 
-resultBtn: {
+  resultBtn: {
     paddingVertical: 12,
     paddingHorizontal: 60,
     borderRadius: 5,
@@ -296,7 +295,29 @@ resultBtn: {
     fontSize: 16,
     fontWeight: 400,
     color: "#F2F4F7",
-  }
+  },
+
+
+  carouselContainer: {
+    marginVertical: 20,
+  },
+  carouselItem: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover'
+  },
+  carouselTitle: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 15,
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },  
 });
 
 export default styles;

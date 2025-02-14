@@ -1,7 +1,7 @@
 import { View, Text, Image, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React from 'react';
 import styles from '../Styles';
-import { useGetCountriesQuery } from '../redux/slices/countriesApiSlice';
+import { useGetCountriesQuery, useGetCountryByNameQuery, useGetCountryByRegionQuery, } from '../redux/slices/countriesApiSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const groupCountriesByLetter = (countries) => {
@@ -25,11 +25,23 @@ const groupCountriesByLetter = (countries) => {
     }));
 };
 
-const CountryList = ({ theme, name }) => {
+const CountryList = ({ theme, name, region }) => {
     const navigation = useNavigation();
+
+    console.log(region);
     
     
-    const { data, isLoading } = useGetCountriesQuery(name);
+    let queryHook;
+    
+    if (name) {
+        queryHook = useGetCountryByNameQuery(name);
+    } else if (region?.[0]) {
+        queryHook = useGetCountryByRegionQuery(region);
+    } else {
+        queryHook = useGetCountriesQuery();
+    }
+    
+    const { data, isLoading } = queryHook;
     
     if (isLoading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
@@ -52,7 +64,7 @@ const CountryList = ({ theme, name }) => {
                     onPress={() => navigation.navigate('Detail', { country: item })}
                 >
                     <View style={styles.flagWrapper}>
-                        <Image source={{ uri: item.flags.png }} style={styles.flag} />
+                        <Image source={{ uri: item?.flags.png }} style={styles.flag} />
                         <View style={{ marginLeft: 10 }}>
                             <Text 
                                 style={[
@@ -60,7 +72,7 @@ const CountryList = ({ theme, name }) => {
                                     theme === 'dark' ? { color: '#F2F4F7' } : { color: '#1C1917' },
                                 ]}
                             >
-                                {item.name.common}
+                                {item?.name?.common}
                             </Text>
 
                             <Text 
@@ -69,7 +81,7 @@ const CountryList = ({ theme, name }) => {
                                     theme === 'dark' ? { color: '#98A2B3' } : { color: '#667085' },
                                 ]}
                             >
-                                {item.capital?.[0]}
+                                {item?.capital?.[0]}
                             </Text>
                         </View>
                     </View>
