@@ -1,5 +1,5 @@
 import { ActivityIndicator, Dimensions, Image, ScrollView, Text, View } from 'react-native'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styles from '../Styles'
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useGetStatesQuery } from '../redux/slices/countriesApiSlice';
@@ -14,6 +14,8 @@ import { useFonts } from 'expo-font';
 
 const Detail = ({ route }) => {
     const { width } = Dimensions.get('window');  // Get the screen width
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const flatListRef = useRef(null);
 
     const { theme } = useTheme();
     
@@ -82,7 +84,7 @@ const Detail = ({ route }) => {
   ? Object.values(country.currencies)[0]?.name || 'not available' 
   : 'not available';
 
-  const imageData = [
+    const imageData = [
         {
             id: '1',
             image: flag,
@@ -94,6 +96,26 @@ const Detail = ({ route }) => {
             title: `Coat of Arms of ${name}`
         }
     ];
+
+    const goToNextSlide = () => {
+        if (currentIndex < imageData.length - 1) {
+            flatListRef.current.scrollToIndex({
+                index: currentIndex + 1,
+                animated: true
+            });
+            setCurrentIndex(currentIndex + 1);
+        }
+    };
+    
+    const goToPrevSlide = () => {
+        if (currentIndex > 0) {
+            flatListRef.current.scrollToIndex({
+                index: currentIndex - 1,
+                animated: true
+            });
+            setCurrentIndex(currentIndex - 1);
+        }
+    };
 
   return (
     <View 
@@ -134,6 +156,10 @@ const Detail = ({ route }) => {
                 decelerationRate="fast"
                 bounces={false}
                 style={{ marginVertical: 10 }}
+                onMomentumScrollEnd={(event) => {
+                    const newIndex = Math.round(event.nativeEvent.contentOffset.x / (width - 20));
+                    setCurrentIndex(newIndex);
+                }}
             />
 
             <View style={styles.description}>

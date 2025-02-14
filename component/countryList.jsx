@@ -27,9 +27,6 @@ const groupCountriesByLetter = (countries) => {
 
 const CountryList = ({ theme, name, region }) => {
     const navigation = useNavigation();
-
-    console.log(region);
-    
     
     let queryHook;
     
@@ -42,7 +39,7 @@ const CountryList = ({ theme, name, region }) => {
     }
     
     const { data, isLoading } = queryHook;
-    
+
     if (isLoading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
