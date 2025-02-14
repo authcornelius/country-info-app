@@ -79,7 +79,7 @@ const Detail = ({ route }) => {
     const capital = country?.capital || [];
     const region = country?.region || '';
     const population = country?.population || 'not available';
-    const area = country?.area || 'not available';
+    const area = country?.idd.root + country?.idd.suffixes || 'not available';
     const currencies = country?.currencies 
   ? Object.values(country.currencies)[0]?.name || 'not available' 
   : 'not available';
